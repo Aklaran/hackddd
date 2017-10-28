@@ -53,6 +53,8 @@ def mousePressed(event, data):
 def keyPressed(event, data):
     if data.state == "counting in two ways":
         jimmies.keyPressed(event, data.countingData)
+    if data.state == "n choose k":
+        nchoosekScene.keyDown(event, data.nchoosekData)
 
 def timerFired(data):
     if data.state == "counting in two ways":
