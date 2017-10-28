@@ -28,7 +28,7 @@ def initMenu(data):
 
     data.boxes = [data.buttonBox, data.listBox, data.upBox, data.downBox]
 
-    data.scenes = ["n choose k", "counting in two ways"]
+    data.scenes = ["n choose k", "counting in two ways", "subcommittee"]
     data.sceneIndex = 0
     data.sceneChoice = data.scenes[data.sceneIndex]
 

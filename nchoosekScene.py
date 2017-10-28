@@ -15,7 +15,7 @@ def inputRestrictions(data):
 
 def updateNM(data):
     data.visuals = [None] # * ((data.inputs[0] - data.inputs[1] + 2) * 2 - 1)
-    bounds = (50, 200, 200, 200)
+    bounds = (50, 200, data.width - 100, data.height - 250)
     data.visuals[-1] = vis(data.inputs[0], data.inputs[1], bounds)
 
 def timerFired(data):
