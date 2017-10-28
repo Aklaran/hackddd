@@ -130,7 +130,7 @@ def theBracketsBelow(m,n,k,canvas, data):
         x += 1
     
     
-def run(width=300, height=300):
+def run(width=900, height=450):
     def redrawAllWrapper(canvas, data):
         canvas.delete(ALL)
         canvas.create_rectangle(0, 0, data.width, data.height,
