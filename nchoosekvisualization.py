@@ -82,7 +82,7 @@ class nChooseKVisualization():
 
     def sorting(self, newTime):
         self.checkOrder()
-        m = 1.0;
+        m = 4.0;
         if (not self.sorted):
             if (math.floor(newTime * m) - math.floor(self.time * m) >= 1):
                 if (self.moving != None):
@@ -140,8 +140,8 @@ class nChooseKVisualization():
 
 # first level functions
 def init(data):
-    bounds = (0, 0, 300, 300)
-    data.visualization = nChooseKVisualization(8, 5, bounds)
+    bounds = (0, 0, data.width, data.height)
+    data.visualization = nChooseKVisualization(50, 30, bounds)
 
 def mousePressed(event, data):
     pass

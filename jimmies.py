@@ -5,7 +5,7 @@ def init(data):
     # load data.xyz as appropriate
     data.activated = False
     data.listDex = 0
-    data.args = [5,7,7]
+    data.args = [5,7,4]
     l = listMaker(data.args[0],data.args[1],data.args[2])
     data.len = len(l)
     
