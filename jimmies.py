@@ -5,6 +5,8 @@ def init(data):
     # load data.xyz as appropriate
     data.activated = False
     data.listDex = 0
+    l = listMaker(4,5,4)
+    data.len = len(l)
     
    
 
@@ -15,13 +17,19 @@ def mousePressed(event, data):
 def keyPressed(event, data):
     if event.keysym == "a":
         data.activated = True
+    print(event.keysym)
     pass
+    if event.keysym == "Right" and data.listDex < data.len -4:
+        data.listDex += 1
+    if event.keysym == "Left" and data.listDex > 0:
+        data.listDex -= 1
+
 
 
 def timerFired(data):
     pass
 
-def redrawAll(canvas, data):
+def redrawAllPostFix(canvas, data):
     #if data.activated:
      #   listmaker(4,5,4,canvas)
     initialForm(4,5,4,canvas, data)
@@ -29,7 +37,17 @@ def redrawAll(canvas, data):
     
 
         
+def inABox(x,y):
+    for i in range(0,4):
+        if x in range(data.width / 20 * (r + 3.5 * i)  + data.width // 9,data.width / 20 * (r + 3.5 * i + 3) + data.width // 9):
+            if y in range(data.height / 20 * (r + 6),data.height/20 * (r + 11)):
+                return i
+        return -1
+                
+        canvas.create_rectangle(data.width / 20 * (r + 3.5 * i)  + data.width // 9, data.height / 20 * (r + 6), data.width / 20 * (r + 3.5 * i + 3) + data.width // 9, data.height/20 * (r + 11), width = 4)
         
+
+    
 
 def listMaker(m,n,k):
     l = []
@@ -69,6 +87,7 @@ def initialForm(m,n,k,canvas, data):
     
 def boxesAndText(m,n,k,canvas, data):
     r = 2
+    x = 0
     l = listMaker(m,n,k)
     s = data.width//70
     for i in range(0,4):
@@ -76,18 +95,25 @@ def boxesAndText(m,n,k,canvas, data):
         if i > 0:
             canvas.create_text(data.width / 20 * (r + 3.5 * i)  + data.width // 10, data.height / 20 * (r + 8), text = "+", font = "helvetica 18")
     for i in range(data.listDex, data.listDex + 4):
-      canvas.create_text(data.width / 20 * (r + 3.5 * i)  + data.width // 8.6, data.height / 20 * (r + 6), anchor = NW, text = "Choose " + str(l[i][2]) + " people from a group of " + str(l[i][1]) + ", and " + str(l[i][3]) + " from a group of " + str(l[i][0]), width = data.width / 8 , font = "helvetica " + str(s), justify = CENTER)
-    if i != len(l) - 4:
+        canvas.create_text(data.width / 20 * (r + 3.5 * x)  + data.width // 8.6, data.height / 20 * (r + 6), anchor = NW, text = "Choose " + str(l[i][2]) + " people from a group of " + str(l[i][1]) + ", and " + str(l[i][3]) + " from a group of " + str(l[i][0]), width = data.width / 8 , font = "helvetica " + str(s), justify = CENTER)
+        x += 1
+    if data.listDex != len(l) - 4:
         canvas.create_text(data.width / 20 * (r + 3.5 * 4)  + data.width // 10, data.height / 20 * (r + 8), text = "+ ...", font = "helvetica 18")
     
-    
+    x += 1
         
+        
+def theBracketsBelow(m,n,k,canvas, data):
+    pass
+    
+    
+    
 def run(width=300, height=300):
     def redrawAllWrapper(canvas, data):
         canvas.delete(ALL)
         canvas.create_rectangle(0, 0, data.width, data.height,
                                 fill='white', width=0)
-        redrawAll(canvas, data)
+        redrawAllPostFix(canvas, data)
         canvas.update()    
 
     def mousePressedWrapper(event, canvas, data):
