@@ -5,7 +5,6 @@ import time
 
 import menu
 import jimmies
-import textInput
 import nchoosekScene
 
 def init(data):
@@ -14,9 +13,18 @@ def init(data):
     # data.nchoosekdata defined in nchoosekScene.py
     data.scenes = ["menu", "n choose k", "counting in two ways"]
     data.state = "menu"
+    data.backBox = (data.width - data.width // 9,
+                    data.height // 20,
+                    (data.width - data.width // 9) + data.width // 10,
+                    data.height // 20 + data.width // 10)
 
 def changeState(data, scene):
-    data.menuData.buttonPressed = True
+    if scene == "menu":
+        print("changed to menu")
+        data.menuData.buttonPressed = False
+        print(data.menuData.buttonPressed)
+
+    else: data.menuData.buttonPressed = True
     data.state = scene
     if scene == "n choose k":
         data.nchoosekData = data
@@ -30,13 +38,17 @@ def checkCollision(event, box):
     return event.x > x0 and event.x < x1 and event.y < y1 and event.y > y0
 
 def mousePressed(event, data):
-    if not data.menuData.buttonPressed:
-        if checkCollision(event, data.menuData.buttonBox):
-            changeState(data, data.menuData.sceneChoice)
-        elif checkCollision(event, data.menuData.upBox):
-            menu.changeListOption(data.menuData, "up")
-        elif checkCollision(event, data.menuData.downBox):
-            menu.changeListOption(data.menuData, "down")
+    if data.state == "menu":
+        if not data.menuData.buttonPressed:
+            if checkCollision(event, data.menuData.buttonBox):
+                changeState(data, data.menuData.sceneChoice)
+            elif checkCollision(event, data.menuData.upBox):
+                menu.changeListOption(data.menuData, "up")
+            elif checkCollision(event, data.menuData.downBox):
+                menu.changeListOption(data.menuData, "down")
+    else:
+        if checkCollision(event, data.backBox):
+            changeState(data, "menu")
 
 def keyPressed(event, data):
     if data.state == "counting in two ways":
@@ -53,6 +65,7 @@ def parseInput(data):
 
 def redrawAll(canvas, data):
     drawFrameRate(canvas, data)
+    if not data.state == "menu": drawBackButton(canvas, data)
 
     if data.state == "menu":
         menu.drawMenu(canvas, data.menuData)
@@ -60,6 +73,10 @@ def redrawAll(canvas, data):
         nchoosekScene.redrawAll(canvas, data.nchoosekData)
     elif data.state == "counting in two ways":
         jimmies.redrawAllPostFix(canvas, data.countingData)
+
+def drawBackButton(canvas, data):
+    (x0, y0, x1, y1) = data.backBox
+    canvas.create_rectangle(x0, y0, x1, y1)
 
 
 def drawFrameRate(canvas, data):
