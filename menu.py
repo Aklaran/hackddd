@@ -51,3 +51,5 @@ def drawMenu(canvas, data):
         canvas.create_rectangle(x0, y0, x1, y1)
         if box == data.listBox:
             canvas.create_text((x1+x0)/2, (y1+y0)/2, text=data.sceneChoice, font="Helvetica 24")
+        if box == data.buttonBox:
+            canvas.create_text((x1 + x0) / 2, (y1 + y0) / 2, text="Go!", font="Helvetica 24")

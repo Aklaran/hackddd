@@ -79,6 +79,7 @@ def redrawAll(canvas, data):
 def drawBackButton(canvas, data):
     (x0, y0, x1, y1) = data.backBox
     canvas.create_rectangle(x0, y0, x1, y1)
+    canvas.create_text((x0+x1/2),(y0+y1/2), text="back", font="Helvetica 24")
 
 
 def drawFrameRate(canvas, data):
