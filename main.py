@@ -1,26 +1,5 @@
 def init(data):
     # load data.xyz as appropriate
-    data.board = make2dList(data.rows, data.cols)
-    data.player1, data.player2 = "blue", "orange"
-    #sum = turnSum (out of 42),  score = total score (out of 5)
-    data.player1Sum = data.player2Sum = 0
-    data.player1Score = data.player2Score = 0
-    data.position = [0, 0]
-    data.currPlayer = data.player1
-    data.gameOver = False
-    data.winner = ''
-    
-    #calc data
-    data.checkDirs = [ (-1, -1), (-1, 0), (-1, +1),
-                       ( 0, -1),          ( 0, +1),
-                       (+1, -1), (+1, 0), (+1, +1) ]
-    
-    # view data
-    data.placeBuffer = 3
-    data.gridWidth = data.width
-    data.gridHeight = data.height - data.height//10
-    data.yRadius = (data.gridHeight//data.rows)//2
-    data.xRadius = (data.gridWidth//data.cols)//2
 
 def mousePressed(event, data):
     # use event.x and event.y
@@ -28,35 +7,13 @@ def mousePressed(event, data):
 
 def keyPressed(event, data):
     #only allow input if game is not over duh
-    if not data.gameOver:
-        # use event.char and event.keysym
-        if event.keysym in ["Up", "Right", "Down", "Left"]:
-            moveMarker(event,data)
-        elif event.char in string.digits:
-            placePiece(event, data)
-        else: print("please choose a valid move")
+
 
 def timerFired(data):
     pass
 
 def redrawAll(canvas, data):
-    if not data.gameOver:
-        # draw in canvas
-        drawBoard(canvas, data)
-        drawMarker(canvas, data)
-        drawP1Score(canvas, data)
-        drawP2Score(canvas, data)
-        for row in range(data.rows):
-            for col in range(data.cols):
-                r, c = row, col
-                d = data.board[row][col]
-                if d: drawDigit(canvas, data, d, r, c)
-    elif data.gameOver:
-        canvas.create_text(data.width//2, data.height//2,
-                           text=("GAME OVER - WINNER: %s" %data.winner), 
-                           font="Arial 16 bold")
-        drawP1Score(canvas, data)
-        drawP2Score(canvas, data)
+    pass
 
 def run(rows, cols, width=300, height=300):
     def redrawAllWrapper(canvas, data):
