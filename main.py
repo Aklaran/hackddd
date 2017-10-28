@@ -116,20 +116,20 @@ def run(width=900, height=900):
         canvas.after(0, timerFiredWrapper, canvas, data)
     # create the root and the canvas
     root = Tk()
-    # root.overrideredirect(True)
-    # root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth(),
-    #                                   root.winfo_screenheight()))
-    # canvas = Canvas(root, width=root.winfo_screenwidth(),
-    #                height=root.winfo_screenheight())
-    canvas = Canvas(root, width=width, height=height)
+    root.overrideredirect(True)
+    root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth(),
+                                       root.winfo_screenheight()))
+    canvas = Canvas(root, width=root.winfo_screenwidth(),
+                    height=root.winfo_screenheight())
+    #canvas = Canvas(root, width=width, height=height)
     canvas.pack()
     # Set up data and call init
     class Struct(object): pass
     data = Struct()
-    # data.width = root.winfo_screenwidth()
-    # data.height = root.winfo_screenheight()
-    data.width = width
-    data.height = height
+    data.width = root.winfo_screenwidth()
+    data.height = root.winfo_screenheight()
+    #data.width = width
+    #data.height = height
     data.lastTime = time.time()
     data.timerDelay = 0
     data.t = []

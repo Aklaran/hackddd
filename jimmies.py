@@ -172,4 +172,4 @@ def run(width=900, height=450):
     root.mainloop()  # blocks until window is closed
     print("bye!")
 
-run(1400, 700)
+#run(1400, 700)
