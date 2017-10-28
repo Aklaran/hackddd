@@ -10,8 +10,8 @@ from nchoosekvisualization import nChooseKVisualization as vis
 # first level functions
 def init(data):
     data.cursor = 0
-    data.n = 8
-    data.m = 3
+    data.inputNames = ["Number of People", "Size of Subcommittee"]
+    data.inputs = [8, 3]
     data.mouse = [0, 0]
     updateNM(data)
 
@@ -20,37 +20,35 @@ def mousePressed(event, data):
 
 def keyDown(event, data):
     if event.keysym == "Left":
-        data.cursor = (data.cursor - 1) % 2
+        data.cursor = (data.cursor - 1) % len(data.inputs)
     elif event.keysym == "Right":
-        data.cursor = (data.cursor + 1) % 2
+        data.cursor = (data.cursor + 1) % len(data.inputs)
     elif event.keysym == "Up":
-        if (data.cursor == 0):
-            data.n += 1
-        elif (data.cursor == 1):
-            data.m = (data.m + 1) % data.n
+        data.inputs[data.cursor] += 1
+        inputRestrictions(data)
         updateNM(data)
     elif event.keysym == "Down":
-        if (data.cursor == 0):
-            if data.n > 0:
-                data.n -= 1
-                if data.m > data.n:
-                    data.m = data.n
-        elif (data.cursor == 1):
-            data.m = (data.m - 1) % data.n
+        data.inputs[data.cursor] -= 1
+        inputRestrictions(data)
         updateNM(data)
 
+def inputRestrictions(data):
+    if (data.inputs[0] < 0):
+        data.inputs[0] = 0
+    data.inputs[1] = data.inputs[1] % (data.inputs[0] + 1)
+
 def updateNM(data):
-    data.visuals = [None] * ((data.n - data.m + 2) * 2 - 1)
+    data.visuals = [None] * ((data.inputs[0] - data.inputs[1] + 2) * 2 - 1)
     r = (data.width - 260) // 440
-    for i in range(0, data.n - data.m + 1):
+    for i in range(0, data.inputs[0] - data.inputs[1] + 1):
         x = i % r
         y = i // r
         bounds = (300 + x * 440, 200 + y * 220, 200, 200)
-        data.visuals[2 * i] = vis(data.n, data.m + i, bounds)
+        data.visuals[2 * i] = vis(data.inputs[0], data.inputs[1] + i, bounds)
         bounds = (300 + x * 440 + 200, 200 + y * 220, 200, 200)
-        data.visuals[2 * i + 1] = vis(data.m + i, data.m, bounds)
+        data.visuals[2 * i + 1] = vis(data.inputs[1] + i, data.inputs[1], bounds)
     bounds = (50, 200, 200, 200)
-    data.visuals[-1] = vis(data.n, data.m, bounds)
+    data.visuals[-1] = vis(data.inputs[0], data.inputs[1], bounds)
 
 def keyUp(event, data):
     pass
@@ -84,20 +82,16 @@ def redrawAll(canvas, data):
                     str(v.n) + " people")
             canvas.create_text(b[0], b[1], text=text, anchor="nw", width=b[2],
                                font = "120")
-    canvas.create_text(100, 50, text="Total people", font="40")
-    canvas.create_text(250, 50, text="Subcommittee Size", font="40")
 
-    if (data.cursor == 0):
-        cX = 100
+    for i in range(len(data.inputs)):
+        cX = 100 + i * 150
+        cY = 50
+        canvas.create_text(cX, cY, text=data.inputNames[i], font="40")
         cY = 100
-    elif (data.cursor == 1):
-        cX = 250
-        cY = 100
-    r = 20
-    canvas.create_rectangle(cX-r, cY-r, cX+r, cY+r, fill="yellow")
-
-    canvas.create_text(100, 100, text=str(data.n), font="40")
-    canvas.create_text(250, 100, text=str(data.m), font="40")
+        if (data.cursor == i):
+            r = 20
+            canvas.create_rectangle(cX-r, cY-r, cX+r, cY+r, fill="yellow")
+        canvas.create_text(cX, cY, text=str(data.inputs[i]), font="40")
 
 def drawFrameRate(canvas, data):
     frameRate = len(data.t)
