@@ -1,19 +1,22 @@
+import menu.py
+
 def init(data):
     # load data.xyz as appropriate
+    data.state = "menu"
+    data.
 
 def mousePressed(event, data):
     # use event.x and event.y
     pass
 
 def keyPressed(event, data):
-    #only allow input if game is not over duh
-
 
 def timerFired(data):
     pass
 
 def redrawAll(canvas, data):
-    pass
+    if data.state = "menu":
+        drawMenu(canvas, menuData)
 
 def run(rows, cols, width=300, height=300):
     def redrawAllWrapper(canvas, data):
@@ -36,6 +39,7 @@ def run(rows, cols, width=300, height=300):
         redrawAllWrapper(canvas, data)
         # pause, then call timerFired again
         canvas.after(data.timerDelay, timerFiredWrapper, canvas, data)
+
     # Set up data and call init
     class Struct(object): pass
     data = Struct()
@@ -45,6 +49,11 @@ def run(rows, cols, width=300, height=300):
     data.cols = cols
     data.timerDelay = 100 # milliseconds
     init(data)
+
+    # make the data for the menu
+    menuData = data;
+    initMenu(menuData)
+
     # create the root and the canvas
     root = Tk()
     canvas = Canvas(root, width=data.width, height=data.height)
