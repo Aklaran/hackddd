@@ -5,8 +5,10 @@ def init(data):
     # load data.xyz as appropriate
     data.activated = False
     data.listDex = 0
-    l = listMaker(4,5,4)
+    data.args = [5,7,7]
+    l = listMaker(data.args[0],data.args[1],data.args[2])
     data.len = len(l)
+    
     
    
 
@@ -31,9 +33,9 @@ def timerFired(data):
 def redrawAllPostFix(canvas, data):
     #if data.activated:
      #   listmaker(4,5,4,canvas)
-    initialForm(4,5,4,canvas, data)
-    boxesAndText(4,5,4,canvas, data)
-    theBracketsBelow(4,5,4,canvas, data)
+    initialForm(data.args[0],data.args[1],data.args[2],canvas, data)
+    boxesAndText(data.args[0],data.args[1],data.args[2],canvas, data)
+    theBracketsBelow(data.args[0],data.args[1],data.args[2],canvas, data)
     
 
         
