@@ -66,6 +66,8 @@ class nChooseKVisualization():
                             self.dots[self.moving][1] == self.moving + 1):
                             r -= 1
                     self.chosen += 1
+                elif (self.k == self.n):
+                    self.chosen += 1
             else:
                 pass
         if (self.chosen < self.k):
@@ -80,7 +82,7 @@ class nChooseKVisualization():
 
     def sorting(self, newTime):
         self.checkOrder()
-        m = 1.0;
+        m = 0.05;
         if (not self.sorted):
             if (math.floor(newTime * m) - math.floor(self.time * m) >= 1):
                 if (self.moving != None):
@@ -94,9 +96,9 @@ class nChooseKVisualization():
             if (not self.sorted):
                 # find the first place where things are out of order
                 i = 0
-                while self.L[i] < self.L[i+1]:
-                    i += 1
-                self.moving = [self.L[i], self.L[i+1]]
+                for i in range(self.k - 1):
+                    if (self.L[i] > self.L[i+1]):
+                        self.moving = [self.L[i], self.L[i+1]]
             else:
                 return
             # update positions
@@ -130,8 +132,8 @@ class nChooseKVisualization():
             canvas.create_oval(cX - radius, cY - radius, cX + radius,
                                cY + radius, fill = "orange")
             canvas.create_text(cX, cY, text=str(self.dots.index(d) + 1))
-        cX = w * 0.05
-        cY = 3 / 4 * h
+        cX = x + w * 0.05
+        cY = y + 3 / 4 * h
         canvas.create_text(cX, cY, text=self.formula, anchor="nw",
                            font="30")
 
@@ -227,5 +229,6 @@ def run(width=900, height=900):
     root.mainloop()  # blocks until window is closed
     print("bye!")
 
-run()
+if __name__ == "__main__":
+    run()
     
