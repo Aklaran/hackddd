@@ -18,7 +18,6 @@ def keyPressed(event, data):
     if event.keysym == "a":
         data.activated = True
     print(event.keysym)
-    pass
     if event.keysym == "Right" and data.listDex < data.len -4:
         data.listDex += 1
     if event.keysym == "Left" and data.listDex > 0:
@@ -34,6 +33,7 @@ def redrawAllPostFix(canvas, data):
      #   listmaker(4,5,4,canvas)
     initialForm(4,5,4,canvas, data)
     boxesAndText(4,5,4,canvas, data)
+    theBracketsBelow(4,5,4,canvas, data)
     
 
         
@@ -82,7 +82,9 @@ def initialForm(m,n,k,canvas, data):
     canvas.create_rectangle(data.width / 20, data.height / 20 * (r + 6), data.width/5.5, data.height/20 * (r + 11), width = 4)
     canvas.create_line(data.width / 10 * 1.9, data.height / 20 * (r + 8) * .98, data.width / 10 * 2.05,  data.height / 20 * (r + 8) * .98, width = 2)
     canvas.create_line(data.width / 10 * 1.9, data.height / 20 * (r + 8) * 1.03, data.width / 10 * 2.05,  data.height / 20 * (r + 8) * 1.03, width = 2)
-    
+    canvas.create_text(data.width / 20 + 3, data.height / 20 * (r + 6) + 3, anchor = NW, text = "Pick k total buttholes from a group of m + n objects" , width = data.width / 8, font = "helvetica " + str(s), justify = CENTER)
+    canvas.create_text(data.width / 20 + 3, data.height / 20 * (r + 13.5) + 3, text = "(    )" , font = "helvetica " + str(int(3.5 * s)), anchor = W)
+    canvas.create_text(data.width / 8.5, data.height / 20 * (r + 13.5) + 3, text = "m + n     k" , font = "helvetica " + str(s), width = 100 , justify =  CENTER)
     
     
 def boxesAndText(m,n,k,canvas, data):
@@ -91,21 +93,38 @@ def boxesAndText(m,n,k,canvas, data):
     l = listMaker(m,n,k)
     s = data.width//70
     for i in range(0,4):
-        canvas.create_rectangle(data.width / 20 * (r + 3.5 * i)  + data.width // 9, data.height / 20 * (r + 6), data.width / 20 * (r + 3.5 * i + 3) + data.width // 9, data.height/20 * (r + 11), width = 4)
+        canvas.create_rectangle(data.width / 20 * (r + 3.5 * i)  + data.width // 7, data.height / 20 * (r + 6), data.width / 20 * (r + 3.5 * i + 3) + data.width // 8, data.height/20 * (r + 11), width = 4)
         if i > 0:
-            canvas.create_text(data.width / 20 * (r + 3.5 * i)  + data.width // 10, data.height / 20 * (r + 8), text = "+", font = "helvetica 18")
+            canvas.create_text(data.width / 20 * (r + 3.5 * i)  + data.width // 8, data.height / 20 * (r + 8), text = "+", font = "helvetica " + str(s))
     for i in range(data.listDex, data.listDex + 4):
-        canvas.create_text(data.width / 20 * (r + 3.5 * x)  + data.width // 8.6, data.height / 20 * (r + 6), anchor = NW, text = "Choose " + str(l[i][2]) + " people from a group of " + str(l[i][1]) + ", and " + str(l[i][3]) + " from a group of " + str(l[i][0]), width = data.width / 8 , font = "helvetica " + str(s), justify = CENTER)
+        canvas.create_text(data.width / 20 * (r + 3.5 * x)  + data.width // 6.6, data.height / 20 * (r + 6), anchor = NW, text = "Choose " + str(l[i][2]) + " people from a group of " + str(l[i][1]) + ", and " + str(l[i][3]) + " from a group of " + str(l[i][0]), width = data.width / 8 , font = "helvetica " + str(s), justify = CENTER)
         x += 1
     if data.listDex != len(l) - 4:
-        canvas.create_text(data.width / 20 * (r + 3.5 * 4)  + data.width // 10, data.height / 20 * (r + 8), text = "+ ...", font = "helvetica 18")
+        canvas.create_text(data.width / 20 * (r + 3.6 * 4)  + data.width // 10, data.height / 20 * (r + 8), text = "+ ...", font = "helvetica " +str(s))
+        
     
     x += 1
-        
+    
+    if data.listDex != 0:
+        canvas.create_text(data.width / 20 * (r + 3.6 * .13)  + data.width // 10, data.height / 20 * (r + 8), text = "... +", font = "helvetica " +str(s))
         
 def theBracketsBelow(m,n,k,canvas, data):
-    pass
-    
+    r = 2
+    x = 0
+    s = data.width//70
+    l = listMaker(m,n,k)
+    for i in range(0,4): 
+        canvas.create_text(data.width / 20 * (r + 3.6 * i + 1.5)  + data.width // 8,data.height/20 * (r + 14), text = "(  )(  )", font = "helvetica " + str(3 * s) )
+       # canvas.create_rectangle(data.width / 20 * (r + 3.5 * i)  + data.width // 9, data.height / 20 * (r + 6), data.width / 20 * (r + 3.5 * i + 3) + data.width // 9, data.height/20 * (r + 11), width = 4)
+        if i > 0:
+            canvas.create_text(data.width / 20 * (r + 3.5 * i)  + data.width // 8, data.height / 20 * (r + 14), text = "+", font = "helvetica " + str(s))
+    for i in range(data.listDex, data.listDex + 4):
+     #   canvas.create_text(data.width / 20 * (r + 3.5 * x)  + data.width // 6.6, data.height / 20 * (r + 6), anchor = NW, text = "Choose " + str(l[i][2]) + " people from a group of " + str(l[i][1]) + ", and " + str(l[i][3]) + " from a group of " + str(l[i][0]), width = data.width / 8 , font = "helvetica " + str(s), justify = CENTER)
+        canvas.create_text(data.width / 20 * (r + 3.6 * x)  + data.width // 6, data.height / 20 * (r + 14.7), text = str(l[i][2]), font = "helvetica " + str(s))
+        canvas.create_text(data.width / 20 * (r + 3.6 * x)  + data.width // 6, data.height / 20 * (r + 13.7), text = str(l[i][1]), font = "helvetica " + str(s))
+        canvas.create_text(data.width / 20 * (r + 3.6 * x + 1.4 )  + data.width // 6, data.height / 20 * (r + 13.7), text = str(l[i][0]), font = "helvetica " + str(s))
+        canvas.create_text(data.width / 20 * (r + 3.6 * x + 1.4)  + data.width // 6, data.height / 20 * (r + 14.7), text = str(l[i][3]), font = "helvetica " + str(s))
+        x += 1
     
     
 def run(width=300, height=300):
