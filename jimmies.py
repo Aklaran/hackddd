@@ -5,27 +5,47 @@ def init(data):
     # load data.xyz as appropriate
     data.activated = False
     data.listDex = 0
+    data.inputNames = ["N", "M", "K"]
     data.args = [5,7,4]
+    data.inputs = data.args
     l = listMaker(data.args[0],data.args[1],data.args[2])
     data.len = len(l)
-    
-    
-   
+    data.cursor = 0
 
 def mousePressed(event, data):
     # use event.x and event.y
     pass
 
 def keyPressed(event, data):
-    if event.keysym == "a":
-        data.activated = True
-    print(event.keysym)
-    if event.keysym == "Right" and data.listDex < data.len -4:
+    if event.keysym == "d" and data.listDex < data.len -4:
         data.listDex += 1
-    if event.keysym == "Left" and data.listDex > 0:
+    if event.keysym == "a" and data.listDex > 0:
         data.listDex -= 1
 
+    if event.keysym == "Left":
+        data.cursor = (data.cursor - 1) % len(data.inputs)
+    elif event.keysym == "Right":
+        data.cursor = (data.cursor + 1) % len(data.inputs)
+    elif event.keysym == "Up":
+        data.inputs[data.cursor] += 1
+        inputRestrictions(data)
+        updateNM(data)
+    elif event.keysym == "Down":
+        data.inputs[data.cursor] -= 1
+        inputRestrictions(data)
+        updateNM(data)
 
+def updateNM(data):
+    l = listMaker(data.args[0],data.args[1],data.args[2])
+    data.len = len(l)
+
+def inputRestrictions(data):
+    if (data.inputs[0] < 3):
+        data.inputs[0] = 3
+    if (data.inputs[1] < 3):
+        data.inputs[1] = 3
+    if (data.inputs[2] > min(data.inputs[0], data.inputs[1])):
+        data.inputs[2] = min(data.inputs[0], data.inputs[1])
 
 def timerFired(data):
     pass
@@ -36,6 +56,18 @@ def redrawAllPostFix(canvas, data):
     initialForm(data.args[0],data.args[1],data.args[2],canvas, data)
     boxesAndText(data.args[0],data.args[1],data.args[2],canvas, data)
     theBracketsBelow(data.args[0],data.args[1],data.args[2],canvas, data)
+    drawInputUI(canvas, data)
+
+def drawInputUI(canvas, data):
+    for i in range(len(data.inputs)):
+        cX = 300 + i * 200
+        cY = 50
+        canvas.create_text(cX, cY, text=data.inputNames[i], font="40")
+        cY = 100
+        if (data.cursor == i):
+            r = 20
+            canvas.create_rectangle(cX-r, cY-r, cX+r, cY+r, fill="yellow")
+        canvas.create_text(cX, cY, text=str(data.inputs[i]), font="40")
     
 
         
@@ -172,4 +204,5 @@ def run(width=900, height=450):
     root.mainloop()  # blocks until window is closed
     print("bye!")
 
-#run(1400, 700)
+if __name__ == "__main__":
+    run(1400, 700)

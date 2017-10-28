@@ -102,7 +102,7 @@ def drawPlusSigns(canvas, data):
 
 def drawInputUI(canvas, data):
     for i in range(len(data.inputs)):
-        cX = 100 + i * 200
+        cX = 300 + i * 200
         cY = 50
         canvas.create_text(cX, cY, text=data.inputNames[i], font="40")
         cY = 100
