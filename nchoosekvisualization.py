@@ -82,36 +82,35 @@ class nChooseKVisualization():
 
     def sorting(self, newTime):
         self.checkOrder()
-        m = 0.05;
+        m = 1.0;
         if (not self.sorted):
             if (math.floor(newTime * m) - math.floor(self.time * m) >= 1):
                 if (self.moving != None):
-                    pos1 = self.L.index(self.moving[0])
-                    pos2 = self.L.index(self.moving[1])
-                    self.dots[self.moving[0]] = [2, pos2 + 1]
-                    self.dots[self.moving[1]] = [2, pos1 + 1]
-                    self.L[pos1] = self.moving[1]
-                    self.L[pos2] = self.moving[0]
+                    self.dots[self.moving[0]] = [2, self.pos2 + 1]
+                    self.dots[self.moving[1]] = [2, self.pos1 + 1]
+                    temp = self.L[self.pos1]
+                    self.L[self.pos1] = self.L[self.pos2]
+                    self.L[self.pos2] = temp
             self.checkOrder()
             if (not self.sorted):
                 # find the first place where things are out of order
-                i = 0
                 for i in range(self.k - 1):
                     if (self.L[i] > self.L[i+1]):
                         self.moving = [self.L[i], self.L[i+1]]
+                        self.pos1 = i
+                        self.pos2 = i+1
+                        break
             else:
                 return
             # update positions
-            pos1 = self.L.index(self.moving[0])
-            pos2 = self.L.index(self.moving[1])
-            cX = (pos1 + pos2) / 2 + 1
+            cX = (self.pos1 + self.pos2) / 2 + 1
             cY = 2
-            radius = (pos1 - pos2) / 2
-            yScale = 1.0 / (self.n + 1.0) * self.bounds[2] / self.bounds[3] * 3
+            radius = (self.pos1 - self.pos2) / 2
+            yScale = 1.0 / (self.n + 1.0) * self.bounds[2] / self.bounds[3] * 4
             t = newTime * m - math.floor(newTime * m)
-            self.dots[self.moving[0]] = [cY + radius*yScale*math.sin(math.pi * (1 - t)),
+            self.dots[self.moving[1]] = [cY + radius*yScale*math.sin(math.pi * (1 - t)),
                                          cX + radius*math.cos(math.pi * (1 - t))]
-            self.dots[self.moving[1]] = [cY + radius*yScale*math.sin( - t * math.pi),
+            self.dots[self.moving[0]] = [cY + radius*yScale*math.sin( - t * math.pi),
                                          cX + radius*math.cos( - t * math.pi)]
             
 
