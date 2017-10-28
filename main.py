@@ -6,11 +6,17 @@ import time
 import menu
 
 def init(data):
-    # load data.xyz as appropriate
+    # data.menuData is defined in menu.py
     data.state = "menu"
 
+
 def mousePressed(event, data):
-    pass
+    checkCollision(event, data.menuData.buttonBox)
+
+def checkCollision(event, box):
+    (x0, y0, x1, y1) = box
+
+    return event.x > x0 and event.x < x1 and event.y < y1 and event.y > y0
 
 def keyDown(event, data):
     pass
@@ -69,17 +75,20 @@ def run(width=900, height=900):
         canvas.after(0, timerFiredWrapper, canvas, data)
     # create the root and the canvas
     root = Tk()
-    root.overrideredirect(True)
-    root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth(),
-                                       root.winfo_screenheight()))
-    canvas = Canvas(root, width=root.winfo_screenwidth(),
-                    height=root.winfo_screenheight())
+    # root.overrideredirect(True)
+    # root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth(),
+    #                                   root.winfo_screenheight()))
+    # canvas = Canvas(root, width=root.winfo_screenwidth(),
+    #                height=root.winfo_screenheight())
+    canvas = Canvas(root, width=width, height=height)
     canvas.pack()
     # Set up data and call init
     class Struct(object): pass
     data = Struct()
-    data.width = root.winfo_screenwidth()
-    data.height = root.winfo_screenheight()
+    # data.width = root.winfo_screenwidth()
+    # data.height = root.winfo_screenheight()
+    data.width = width
+    data.height = height
     data.lastTime = time.time()
     data.timerDelay = 0
     data.t = []
