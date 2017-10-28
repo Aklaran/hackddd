@@ -6,12 +6,13 @@ import time
 import menu
 import jimmies
 import nchoosekScene
+import subcommittee
 
 def init(data):
     # data.menuData is defined in menu.py
     # data.countingData is defined in jimmies.py
     # data.nchoosekdata defined in nchoosekScene.py
-    data.scenes = ["menu", "n choose k", "counting in two ways"]
+    data.scenes = ["menu", "n choose k", "counting in two ways", "subcommittee"]
     data.state = "menu"
     data.backBox = (data.width - data.width // 9,
                     data.height // 20,
@@ -32,6 +33,9 @@ def changeState(data, scene):
     elif scene == "counting in two ways":
         data.countingData = data
         jimmies.init(data.countingData)
+    elif scene == "subcommittee":
+        data.subcommitteeData = data
+        subcommittee.init(data.subcommitteeData)
 
 def checkCollision(event, box):
     (x0, y0, x1, y1) = box
@@ -50,20 +54,27 @@ def mousePressed(event, data):
         if checkCollision(event, data.backBox):
             changeState(data, "menu")
 
+def mouseMoved(event, data):
+    if data.state == "subcommittee":
+        subcommittee.mouseMoved(event, data.subcommitteeData)
+
 def keyPressed(event, data):
     if data.state == "counting in two ways":
         jimmies.keyPressed(event, data.countingData)
     if data.state == "n choose k":
         nchoosekScene.keyDown(event, data.nchoosekData)
+    if data.state == "subcommittee":
+        subcommittee.keyDown(event, data.subcommitteeData)
 
 def timerFired(data):
     if data.state == "counting in two ways":
         jimmies.timerFired(data.countingData)
     elif data.state == "n choose k":
+        data.nchoosekData.timerDelay = data.timeDelay
         nchoosekScene.timerFired(data.nchoosekData)
-
-def parseInput(data):
-    pass
+    elif data.state == "subcommittee":
+        data.subcommitteeData.timerDelay = data.timerDelay
+        subcommittee.timerFired(data.subcommitteeData)
 
 def redrawAll(canvas, data):
     drawFrameRate(canvas, data)
@@ -75,6 +86,8 @@ def redrawAll(canvas, data):
         nchoosekScene.redrawAll(canvas, data.nchoosekData)
     elif data.state == "counting in two ways":
         jimmies.redrawAllPostFix(canvas, data.countingData)
+    elif data.state == "subcommittee":
+        subcommittee.redrawAll(canvas, data.subcommitteeData)
 
 def drawBackButton(canvas, data):
     (x0, y0, x1, y1) = data.backBox
@@ -102,6 +115,9 @@ def run(width=900, height=900):
     def keyPressedWrapper(event, canvas, data):
         keyPressed(event, data)
         redrawAllWrapper(canvas, data)
+
+    def mouseMovedWrapper(event, canvas, data):
+        mouseMoved(event, data)
 
     def timerFiredWrapper(canvas, data):
         # update times
@@ -147,6 +163,8 @@ def run(width=900, height=900):
                             mousePressedWrapper(event, canvas, data))
     root.bind("<Key>", lambda event:
                             keyPressedWrapper(event, canvas, data))
+    root.bind("<Motion>", lambda event:
+                            mouseMovedWrapper(event, canvas, data))
     timerFiredWrapper(canvas, data)
     # and launch the app
     root.mainloop()  # blocks until window is closed
