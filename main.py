@@ -9,6 +9,7 @@ import nchoosekScene
 import subcommittee
 
 def init(data):
+    data.gc = False
     # data.menuData is defined in menu.py
     # data.countingData is defined in jimmies.py
     # data.nchoosekdata defined in nchoosekScene.py
@@ -59,6 +60,15 @@ def mouseMoved(event, data):
         subcommittee.mouseMoved(event, data.subcommitteeData)
 
 def keyPressed(event, data):
+    if data.state == "menu":
+        if event.keysym == "Up" :
+            menu.changeListOption(data.menuData, "up")
+        if event.keysym == "Down" :
+            menu.changeListOption(data.menuData, "down")
+        if event.keysym == "braceright":
+            data.gc = not data.gc
+        if event.keysym == "Return":
+            changeState(data, data.menuData.sceneChoice)
     if data.state == "counting in two ways":
         jimmies.keyPressed(event, data.countingData)
     if data.state == "n choose k":
@@ -77,11 +87,14 @@ def timerFired(data):
         subcommittee.timerFired(data.subcommitteeData)
 
 def redrawAll(canvas, data):
+    if data.gc:
+        canvas.create_text(1,1,anchor = NW , text = "Irina George-Cuck", font = "helvetica 32")
     drawFrameRate(canvas, data)
     if not data.state == "menu": drawBackButton(canvas, data)
 
     if data.state == "menu":
         menu.drawMenu(canvas, data.menuData)
+        canvas.create_text(data.width//2, data.height//3, text = "Q -hack ED", font = "helvetica 32 bold italic")
     elif data.state == "n choose k":
         nchoosekScene.redrawAll(canvas, data.nchoosekData)
     elif data.state == "counting in two ways":
@@ -92,7 +105,7 @@ def redrawAll(canvas, data):
 def drawBackButton(canvas, data):
     (x0, y0, x1, y1) = data.backBox
     canvas.create_rectangle(x0, y0, x1, y1)
-    canvas.create_text((x0+x1/2),(y0+y1/2), text="back", font="Helvetica 24")
+    canvas.create_text((x0+x1)/2,(y0+y1)/2, text="back", font="Helvetica 24")
 
 
 def drawFrameRate(canvas, data):
