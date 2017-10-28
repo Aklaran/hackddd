@@ -9,7 +9,7 @@ from nchoosekvisualization import nChooseKVisualization
 
 # first level functions
 def init(data):
-    data.n = 6
+    data.n = 10
     data.mouse = [0, 0]
     data.visuals = [None] * (data.n + 1)
     data.bounds = [None] * (data.n + 1)
