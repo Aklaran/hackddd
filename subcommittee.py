@@ -82,7 +82,9 @@ def redrawAll(canvas, data):
                     str(v.n) + " people")
             canvas.create_text(b[0], b[1], text=text, anchor="nw", width=b[2],
                                font = "120")
+    drawInputUI(canvas, data)
 
+def drawInputUI(canvas, data):
     for i in range(len(data.inputs)):
         cX = 100 + i * 150
         cY = 50
