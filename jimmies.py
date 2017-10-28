@@ -4,6 +4,7 @@ from tkinter import*
 def init(data):
     # load data.xyz as appropriate
     data.activated = False
+    data.listDex = 0
     
    
 
@@ -21,15 +22,16 @@ def timerFired(data):
     pass
 
 def redrawAll(canvas, data):
-    if data.activated:
-        listmaker(4,5,4,canvas)
-    initialForm(4,5,canvas, data)
+    #if data.activated:
+     #   listmaker(4,5,4,canvas)
+    initialForm(4,5,4,canvas, data)
+    boxesAndText(4,5,4,canvas, data)
     
 
         
         
 
-def listmaker(m,n,k, canvas):
+def listMaker(m,n,k):
     l = []
     i = 0
     a = m
@@ -39,8 +41,10 @@ def listmaker(m,n,k, canvas):
         l.append([a,b,i,k-i])
         i+= 1
         
+    return l
+        
     
-def initialForm(m,n,canvas, data):
+def initialForm(m,n,k,canvas, data):
     r = 2
     s = data.width // 70
     canvas.create_line(data.width/20  * .97, data.height/20 * r, data.width/10, data.height/20 * r, width = s//2)
@@ -57,12 +61,26 @@ def initialForm(m,n,canvas, data):
     canvas.create_text(data.width / 10 * 2.8, data.height/20 * (r + 1) * 1.25, text = "k - i", font = "helvetica " + str(int(1.3 * s)))
     canvas.create_line(data.width / 10 * 17/8, data.height / 20 * (r + 3), data.width / 10 * 17/8, data.height / 20 * (r + 5), width = int(s / 1.3))
     canvas.create_polygon(data.width / 10 * 9/4, data.height / 20 * (r + 5), data.width / 10 * 2, data.height / 20 * (r + 5), data.width / 10 * 17/8, data.height / 20 * (r + 5), width = 5, fill = "red")
-    canvas.create_rectangle(data.width / 20, data.height / 20 * (r + 6), data.width/5, data.height/20 * (r + 11), width = 4)
-    canvas.create_line(data.width / 10 * 2.1, data.height / 20 * (r + 8) * .97, data.width / 10 * 2.3,  data.height / 20 * (r + 8) * .97, width = 2)
-    canvas.create_line(data.width / 10 * 2.1, data.height / 20 * (r + 8) * 1.03, data.width / 10 * 2.3,  data.height / 20 * (r + 8) * 1.03, width = 2)
+    canvas.create_rectangle(data.width / 20, data.height / 20 * (r + 6), data.width/5.5, data.height/20 * (r + 11), width = 4)
+    canvas.create_line(data.width / 10 * 1.9, data.height / 20 * (r + 8) * .98, data.width / 10 * 2.05,  data.height / 20 * (r + 8) * .98, width = 2)
+    canvas.create_line(data.width / 10 * 1.9, data.height / 20 * (r + 8) * 1.03, data.width / 10 * 2.05,  data.height / 20 * (r + 8) * 1.03, width = 2)
     
     
-        
+    
+def boxesAndText(m,n,k,canvas, data):
+    r = 2
+    l = listMaker(m,n,k)
+    s = data.width//70
+    for i in range(0,4):
+        canvas.create_rectangle(data.width / 20 * (r + 3.5 * i)  + data.width // 9, data.height / 20 * (r + 6), data.width / 20 * (r + 3.5 * i + 3) + data.width // 9, data.height/20 * (r + 11), width = 4)
+        if i > 0:
+            canvas.create_text(data.width / 20 * (r + 3.5 * i)  + data.width // 10, data.height / 20 * (r + 8), text = "+", font = "helvetica 18")
+    for i in range(data.listDex, data.listDex + 4):
+      canvas.create_text(data.width / 20 * (r + 3.5 * i)  + data.width // 8.6, data.height / 20 * (r + 6), anchor = NW, text = "Choose " + str(l[i][2]) + " people from a group of " + str(l[i][1]) + ", and " + str(l[i][3]) + " from a group of " + str(l[i][0]), width = data.width / 8 , font = "helvetica " + str(s), justify = CENTER)
+    if i != len(l) - 4:
+        canvas.create_text(data.width / 20 * (r + 3.5 * 4)  + data.width // 10, data.height / 20 * (r + 8), text = "+ ...", font = "helvetica 18")
+    
+    
         
 def run(width=300, height=300):
     def redrawAllWrapper(canvas, data):
@@ -106,4 +124,4 @@ def run(width=300, height=300):
     root.mainloop()  # blocks until window is closed
     print("bye!")
 
-run(1800, 900)
+run(1400, 700)
