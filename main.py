@@ -70,7 +70,7 @@ def timerFired(data):
     if data.state == "counting in two ways":
         jimmies.timerFired(data.countingData)
     elif data.state == "n choose k":
-        data.nchoosekData.timerDelay = data.timeDelay
+        data.nchoosekData.timerDelay = data.timerDelay
         nchoosekScene.timerFired(data.nchoosekData)
     elif data.state == "subcommittee":
         data.subcommitteeData.timerDelay = data.timerDelay
