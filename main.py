@@ -12,13 +12,6 @@ def init(data):
     data.scenes = ["menu", "n choose k", "counting in two ways"]
     data.state = "menu"
 
-    # optionRoot = Tk()
-    # var = StringVar(optionRoot)
-    # var.set(data.scenes[0])
-    #
-    # w = OptionMenu(optionRoot, var, *data.scenes)
-    # w.pack()
-
 def changeState(data, scene):
     data.state = scene
 
