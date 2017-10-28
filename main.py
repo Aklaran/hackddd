@@ -3,12 +3,11 @@ import math
 import random
 import time
 
-import menu.py
+import menu
 
 def init(data):
     # load data.xyz as appropriate
     data.state = "menu"
-    
 
 def mousePressed(event, data):
     pass
@@ -27,8 +26,9 @@ def parseInput(data):
 
 def redrawAll(canvas, data):
     drawFrameRate(canvas, data)
-    if data.state = "menu":
-    drawMenu(canvas, menuData)
+
+    if data.state == "menu":
+        menu.drawMenu(canvas, data.menuData)
 
 def drawFrameRate(canvas, data):
     frameRate = len(data.t)
@@ -84,6 +84,13 @@ def run(width=900, height=900):
     data.timerDelay = 0
     data.t = []
     init(data)
+
+    # set up menu
+
+    data.menuData = data;
+    menu.initMenu(data.menuData)
+    print(str(data.menuData.width));
+
     # set up events
     root.bind("<Button-1>", lambda event:
                             mousePressedWrapper(event, canvas, data))
