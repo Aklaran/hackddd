@@ -5,12 +5,19 @@ import time
 
 import menu
 import jimmies
+import textInput
 
 def init(data):
     # data.menuData is defined in menu.py
     # data.countingData is defined in jimmies.py
     data.scenes = ["menu", "n choose k", "counting in two ways"]
     data.state = "menu"
+
+    data.testDict = {"m": 0, "n": 0}
+    data.textInput = textInput.TextInput(data.testDict, (0,0))
+
+    data.resultDict = data.textInput.setVars()
+    print(data.resultDict)
 
 def changeState(data, scene):
     data.state = scene
@@ -29,7 +36,6 @@ def mousePressed(event, data):
 
 def keyPressed(event, data):
     if data.state == "counting in two ways":
-        print("cock")
         jimmies.keyPressed(event, data.countingData)
 
 def timerFired(data):

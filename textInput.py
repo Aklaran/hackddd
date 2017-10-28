@@ -1,11 +1,12 @@
 class TextInput():
-    #tuple bounds = (x, y, w, h)
+    #tuple coords = (x, y)
     #dict vs = variables that user can set in form {"var" : NULL}
-    def __init__(self, vs, bounds):
+    def __init__(self, vs, coords):
         self.vs = vs
-        self.bounds = bounds
+        self.coords = coords
 
     def setVars(self):
+        variables = self.vs
         for key in self.vs:
             validInput = False;
             while validInput == False:
@@ -15,6 +16,7 @@ class TextInput():
                     print("Please provide a valid integer.")
                     continue
                 validInput = True
-            self.vs[key] = p
+            variables[key] = p
+        return variables
 
 
