@@ -66,7 +66,7 @@ def inABox(x,y):
         
     
 def initialForm(n,k,canvas, data):
-    r = 2
+    r = 4
     s = data.width // 70
     canvas.create_line(data.width/20  * .97, data.height/20 * r, data.width/10, data.height/20 * r, width = s//2)
     canvas.create_line(data.width/20 , data.height/20 * r, data.width / 20 * 1.5 + 2, data.height/20 * (r + 1) + 2, width = s//2)
@@ -80,14 +80,14 @@ def initialForm(n,k,canvas, data):
     canvas.create_text(data.width / 10 * 7/4, data.height/20 * (r + 1) * 1.25, text = " k", font = "helvetica " + str(int(1.5 * s)))
     #canvas.create_text(data.width / 10 * 2.8, data.height/20 * (r + 1) * .9, text = str(69), font = "helvetica " + str(int(1.3 * s )))
     #canvas.create_text(data.width / 10 * 2.8, data.height/20 * (r + 1) * 1.25, text = "boobs", font = "helvetica " + str(int(1.3 * s)))
-    canvas.create_line(data.width / 10 , data.height / 20 * (r + 3), data.width / 10 , data.height / 20 * (r + 5), width = int(s / 1.3))
-    canvas.create_polygon(data.width / 10 * 9/4, data.height / 20 * (r + 5), data.width / 10 * 2, data.height / 20 * (r + 5), data.width / 10 * 17/8, data.height / 20 * (r + 5), width = 5, fill = "red")
-    canvas.create_rectangle(data.width / 20, data.height / 20 * (r + 6), data.width/5.5, data.height/20 * (r + 11), width = 4)
-    canvas.create_line(data.width / 10 * 1.9, data.height / 20 * (r + 8) * .98, data.width / 10 * 2.05,  data.height / 20 * (r + 8) * .98, width = 2)
-    canvas.create_line(data.width / 10 * 1.9, data.height / 20 * (r + 8) * 1.03, data.width / 10 * 2.05,  data.height / 20 * (r + 8) * 1.03, width = 2)
-    canvas.create_text(data.width / 20 + 3, data.height / 20 * (r + 6) + 3, anchor = NW, text = "Pick m + n total buttholes from a group of k objects" , width = data.width / 8, font = "helvetica " + str(s), justify = CENTER)
-    canvas.create_text(data.width / 20 + 3, data.height / 20 * (r + 13.5) + 3, text = "(    )" , font = "helvetica " + str(int(3.5 * s)), anchor = W)
-    canvas.create_text(data.width / 8.5, data.height / 20 * (r + 13.5) + 3, text = "n + 1     k + 1" , font = "helvetica " + str(s), width = 100 , justify =  CENTER)
+    #canvas.create_line(data.width / 10 , data.height / 20 * (r + 3), data.width / 10 , data.height / 20 * (r + 5), width = int(s / 1.3))
+    #canvas.create_polygon(data.width / 10 * 9/4, data.height / 20 * (r + 5), data.width / 10 * 2, data.height / 20 * (r + 5), data.width / 10 * 17/8, data.height / 20 * (r + 5), width = 5, fill = "red")
+    canvas.create_rectangle(data.width / 20, data.height / 20 * (r + 4), data.width/5.5, data.height/20 * (r + 9), width = 4)
+    canvas.create_line(data.width / 10 * 1.9, data.height / 20 * (r + 6) * .98, data.width / 10 * 2.05,  data.height / 20 * (r + 6) * .98, width = 2)
+    canvas.create_line(data.width / 10 * 1.9, data.height / 20 * (r + 6) * 1.03, data.width / 10 * 2.05,  data.height / 20 * (r + 6) * 1.03, width = 2)
+    canvas.create_text(data.width / 20 + 3, data.height / 20 * (r + 4) + 3, anchor = NW, text = "Pick m + n total buttholes from a group of k objects" , width = data.width / 8, font = "helvetica " + str(s), justify = CENTER)
+    canvas.create_text(data.width / 20 + 3, data.height / 20 * (r + 11.5) + 3, text = "(    )" , font = "helvetica " + str(int(3.5 * s)), anchor = W)
+    canvas.create_text(data.width / 8.5, data.height / 20 * (r + 11.5) + 3, text = "n + 1     k + 1" , font = "helvetica " + str(s), width = 100 , justify =  CENTER)
     
     
 def boxesAndText(n,k,canvas, data):
