@@ -4,15 +4,17 @@ import math
 import time
 
 class nChooseKVisualization():
-    def __init__(self, n, k):
+    def __init__(self, n, k, bounds):
         self.n = n
         self.k = k
-        self.left = n
+        self.bounds = bounds;
         self.chosen = -1
         self.moving = None
         self.formula = ""
         self.time = 0
         self.startingPositions()
+        self.sorted = False
+        self.L = []
 
     def startingPositions(self):
         self.dots = [ [1, i+1] for i in range(self.n) ]
@@ -23,12 +25,32 @@ class nChooseKVisualization():
             return
         newTime = self.time + deltaT
         if (self.chosen < self.k):
+            self.roundOneMoves(newTime)
+        elif (not self.sorted):
+            if (len(self.L) == 0):
+                # go through and create the actual list of chosen dots
+                self.L = [0] * self.k;
+                for i in range(self.n):
+                    if (self.dots[i][0] == 2):
+                        self.L[self.dots[i][1] - 1] = i
+                self.moving = None
+                for i in range(self.k):
+                    self.formula = self.formula + "/" + str(self.k - i)
+            self.sorting(newTime)
+        self.time = newTime
+
+    def roundOneMoves(self, newTime):
+        if (self.chosen < self.k):
             if (self.time == 0 or
                 (math.floor(newTime) - math.floor(self.time) == 1)):
                 if (self.moving != None):
                     #finish the move
-                    print(self.chosen)
+                    #print(self.chosen)
                     self.dots[self.moving] = self.endingPositions[self.chosen][:]
+                    if (self.formula == ""):
+                        self.formula = self.formula + str(self.n - self.chosen)
+                    else:
+                        self.formula = self.formula + "(" + str(self.n - self.chosen) + ")"
                 #choose the next one to move
                 canBeMoved = 0
                 for i in range(self.n):
@@ -55,24 +77,70 @@ class nChooseKVisualization():
                                          (1 - t) * initialPosition[0])
             self.dots[self.moving][1] = (t * finalPosition[1] +
                                          (1 - t) * initialPosition[1])
-        self.time = newTime
 
-    def draw(self, x, y, w, h, canvas):
-        radius = min( w / (self.n + 1) / 2, h / 6)
+    def sorting(self, newTime):
+        self.checkOrder()
+        m = 1.0;
+        if (not self.sorted):
+            if (math.floor(newTime * m) - math.floor(self.time * m) >= 1):
+                if (self.moving != None):
+                    pos1 = self.L.index(self.moving[0])
+                    pos2 = self.L.index(self.moving[1])
+                    self.dots[self.moving[0]] = [2, pos2 + 1]
+                    self.dots[self.moving[1]] = [2, pos1 + 1]
+                    self.L[pos1] = self.moving[1]
+                    self.L[pos2] = self.moving[0]
+            self.checkOrder()
+            if (not self.sorted):
+                # find the first place where things are out of order
+                i = 0
+                while self.L[i] < self.L[i+1]:
+                    i += 1
+                self.moving = [self.L[i], self.L[i+1]]
+            else:
+                return
+            # update positions
+            pos1 = self.L.index(self.moving[0])
+            pos2 = self.L.index(self.moving[1])
+            cX = (pos1 + pos2) / 2 + 1
+            cY = 2
+            radius = (pos1 - pos2) / 2
+            yScale = 1.0 / (self.n + 1.0) * self.bounds[2] / self.bounds[3] * 3
+            t = newTime * m - math.floor(newTime * m)
+            self.dots[self.moving[0]] = [cY + radius*yScale*math.sin(math.pi * (1 - t)),
+                                         cX + radius*math.cos(math.pi * (1 - t))]
+            self.dots[self.moving[1]] = [cY + radius*yScale*math.sin( - t * math.pi),
+                                         cX + radius*math.cos( - t * math.pi)]
+            
+
+    def checkOrder(self):
+        # check for order
+        self.sorted = True
+        for i in range(self.k - 1):
+            if (self.L[i] > self.L[i+1]):
+                self.sorted = False
+
+    def draw(self, canvas):
+        (x, y, w, h) = self.bounds
+        radius = min( w / (self.n + 1) / 2, h / 9)
         radius = radius * 0.8;
-        for i in range(len(self.dots)):
-            d = self.dots[i]
+        for d in self.dots:
             cX = x + d[1] / (self.n + 1.0) * w
-            cY = y + d[0] / 3 * h
+            cY = y + d[0] / 4 * h
             canvas.create_oval(cX - radius, cY - radius, cX + radius,
                                cY + radius, fill = "orange")
-            canvas.create_text(cX, cY, text=str(i + 1))
+            canvas.create_text(cX, cY, text=str(self.dots.index(d) + 1))
+        cX = w * 0.05
+        cY = 3 / 4 * h
+        canvas.create_text(cX, cY, text=self.formula, anchor="nw",
+                           font="30")
 
 ## TESTING
 
 # first level functions
 def init(data):
-    data.visualization = nChooseKVisualization(50, 40)
+    bounds = (0, 0, 300, 300)
+    data.visualization = nChooseKVisualization(8, 5, bounds)
 
 def mousePressed(event, data):
     pass
@@ -84,14 +152,14 @@ def keyUp(event, data):
     pass
 
 def timerFired(data):
-    data.visualization.update(data.timerDelay / 100)
+    data.visualization.update(data.timerDelay / 500)
 
 def parseInput(data):
     pass
 
 def redrawAll(canvas, data):
     drawFrameRate(canvas, data)
-    data.visualization.draw(0, 0, data.width, data.height, canvas)
+    data.visualization.draw(canvas)
 
 def drawFrameRate(canvas, data):
     frameRate = len(data.t)
