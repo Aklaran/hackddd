@@ -82,7 +82,23 @@ def redrawAll(canvas, data):
                     str(v.n) + " people")
             canvas.create_text(b[0], b[1], text=text, anchor="nw", width=b[2],
                                font = "120")
+    drawPlusSigns(canvas, data)
     drawInputUI(canvas, data)
+
+def drawPlusSigns(canvas, data):
+    # first draw the equal sign
+    cY = 300
+    cX = (300 + 250) / 2
+    canvas.create_text(cX, cY, text="=", font="40")
+    # now draw a plus sign after every other box
+    r = (data.width - 260) // 440
+    for i in range(0, data.inputs[0] - data.inputs[1]):
+        x = i % r
+        y = i // r
+        bounds = (300 + x * 440 + 200, 200 + y * 220, 200, 200)
+        cX = 300 + x * 440 + 200 + 200 + 40 / 2
+        cY = 200 + y * 220 + 200 / 2
+        canvas.create_text(cX, cY, text="+", font="40")
 
 def drawInputUI(canvas, data):
     for i in range(len(data.inputs)):
@@ -166,4 +182,5 @@ def run(width=900, height=900):
     root.mainloop()  # blocks until window is closed
     print("bye!")
 
-run()
+if __name__ == "__main__":
+    run()
