@@ -9,13 +9,27 @@ def init(data):
     # data.menuData is defined in menu.py
     data.state = "menu"
 
+    data.scenes = ["n choose k", "counting in two ways"]
+
+    # optionRoot = Tk()
+    # var = StringVar(optionRoot)
+    # var.set(data.scenes[0])
+    #
+    # w = OptionMenu(optionRoot, var, *data.scenes)
+    # w.pack()
+
 
 def mousePressed(event, data):
-    checkCollision(event, data.menuData.buttonBox)
+    if checkCollision(event, data.menuData.buttonBox):
+        return
+        # scene transition
+    elif checkCollision(event, data.menuData.upBox):
+        menu.changeListOption(data.menuData, "up")
+    elif checkCollision(event, data.menuData.downBox):
+        menu.changeListOption(data.menuData, "down")
 
 def checkCollision(event, box):
     (x0, y0, x1, y1) = box
-
     return event.x > x0 and event.x < x1 and event.y < y1 and event.y > y0
 
 def keyDown(event, data):
