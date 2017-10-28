@@ -36,6 +36,7 @@ def mousePressed(event, data):
 
 def keyPressed(event, data):
     if data.state == "counting in two ways":
+        print("cock")
         jimmies.keyPressed(event, data.countingData)
 
 def timerFired(data):
@@ -73,11 +74,9 @@ def run(width=900, height=900):
         mousePressed(event, data)
         redrawAllWrapper(canvas, data)
 
-    def keyDownWrapper(event, canvas, data):
-        keyDown(event, data)
-
-    def keyUpWrapper(event, canvas, data):
-        keyUp(event, data)
+    def keyPressedWrapper(event, canvas, data):
+        keyPressed(event, data)
+        redrawAllWrapper(canvas, data)
 
     def timerFiredWrapper(canvas, data):
         # update times
@@ -124,10 +123,8 @@ def run(width=900, height=900):
     # set up events
     root.bind("<Button-1>", lambda event:
                             mousePressedWrapper(event, canvas, data))
-    root.bind("<KeyPress>", lambda event:
-                            keyDownWrapper(event, canvas, data))
-    root.bind("<KeyRelease>", lambda event:
-                            keyUpWrapper(event, canvas, data))
+    root.bind("<Key>", lambda event:
+                            keyPressedWrapper(event, canvas, data))
     timerFiredWrapper(canvas, data)
     # and launch the app
     root.mainloop()  # blocks until window is closed
