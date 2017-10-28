@@ -4,9 +4,11 @@ import random
 import time
 
 import menu
+import jimmies
 
 def init(data):
     # data.menuData is defined in menu.py
+    # data.countingData is defined in jimmies.py
     data.scenes = ["menu", "n choose k", "counting in two ways"]
     data.state = "menu"
 
@@ -20,6 +22,10 @@ def init(data):
 def changeState(data, scene):
     data.state = scene
 
+def checkCollision(event, box):
+    (x0, y0, x1, y1) = box
+    return event.x > x0 and event.x < x1 and event.y < y1 and event.y > y0
+
 def mousePressed(event, data):
     if checkCollision(event, data.menuData.buttonBox):
         changeState(data, data.menuData.sceneChoice)
@@ -28,18 +34,13 @@ def mousePressed(event, data):
     elif checkCollision(event, data.menuData.downBox):
         menu.changeListOption(data.menuData, "down")
 
-def checkCollision(event, box):
-    (x0, y0, x1, y1) = box
-    return event.x > x0 and event.x < x1 and event.y < y1 and event.y > y0
-
-def keyDown(event, data):
-    pass
-
-def keyUp(event, data):
-    pass
+def keyPressed(event, data):
+    if data.state == "counting in two ways":
+        jimmies.keyPressed(event, data.countingData)
 
 def timerFired(data):
-    pass
+    if data.state == "counting in two ways":
+        jimmies.timerFired(data.countingData)
 
 def parseInput(data):
     pass
@@ -52,7 +53,7 @@ def redrawAll(canvas, data):
     elif data.state == "n choose k":
         return
     elif data.state == "counting in two ways":
-        return
+        jimmies.redrawAllPostFix(canvas, data.countingData)
 
 
 def drawFrameRate(canvas, data):
@@ -114,10 +115,11 @@ def run(width=900, height=900):
     init(data)
 
     # set up menu
-
-    data.menuData = data;
+    data.menuData = data
     menu.initMenu(data.menuData)
-    print(str(data.menuData.width))
+    # set up counting two ways stuff
+    data.countingData = data
+    jimmies.init(data.countingData)
 
     # set up events
     root.bind("<Button-1>", lambda event:
