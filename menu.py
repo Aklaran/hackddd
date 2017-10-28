@@ -32,6 +32,8 @@ def initMenu(data):
     data.sceneIndex = 0
     data.sceneChoice = data.scenes[data.sceneIndex]
 
+    data.buttonPressed = False
+
 def changeListOption(data, dir):
     if dir == "up":
         if not data.sceneIndex == 0:

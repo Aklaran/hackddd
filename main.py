@@ -6,33 +6,37 @@ import time
 import menu
 import jimmies
 import textInput
+import nchoosekScene
 
 def init(data):
     # data.menuData is defined in menu.py
     # data.countingData is defined in jimmies.py
+    # data.nchoosekdata defined in nchoosekScene.py
     data.scenes = ["menu", "n choose k", "counting in two ways"]
     data.state = "menu"
 
-    data.testDict = {"m": 0, "n": 0}
-    data.textInput = textInput.TextInput(data.testDict, (0,0))
-
-    data.resultDict = data.textInput.setVars()
-    print(data.resultDict)
-
 def changeState(data, scene):
+    data.menuData.buttonPressed = True
     data.state = scene
+    if scene == "n choose k":
+        data.nchoosekData = data
+        nchoosekScene.init(data.nchoosekData)
+    elif scene == "counting in two ways":
+        data.countingData = data
+        jimmies.init(data.countingData)
 
 def checkCollision(event, box):
     (x0, y0, x1, y1) = box
     return event.x > x0 and event.x < x1 and event.y < y1 and event.y > y0
 
 def mousePressed(event, data):
-    if checkCollision(event, data.menuData.buttonBox):
-        changeState(data, data.menuData.sceneChoice)
-    elif checkCollision(event, data.menuData.upBox):
-        menu.changeListOption(data.menuData, "up")
-    elif checkCollision(event, data.menuData.downBox):
-        menu.changeListOption(data.menuData, "down")
+    if not data.menuData.buttonPressed:
+        if checkCollision(event, data.menuData.buttonBox):
+            changeState(data, data.menuData.sceneChoice)
+        elif checkCollision(event, data.menuData.upBox):
+            menu.changeListOption(data.menuData, "up")
+        elif checkCollision(event, data.menuData.downBox):
+            menu.changeListOption(data.menuData, "down")
 
 def keyPressed(event, data):
     if data.state == "counting in two ways":
@@ -41,6 +45,8 @@ def keyPressed(event, data):
 def timerFired(data):
     if data.state == "counting in two ways":
         jimmies.timerFired(data.countingData)
+    elif data.state == "n choose k":
+        nchoosekScene.timerFired(data.nchoosekData)
 
 def parseInput(data):
     pass
@@ -51,7 +57,7 @@ def redrawAll(canvas, data):
     if data.state == "menu":
         menu.drawMenu(canvas, data.menuData)
     elif data.state == "n choose k":
-        return
+        nchoosekScene.redrawAll(canvas, data.nchoosekData)
     elif data.state == "counting in two ways":
         jimmies.redrawAllPostFix(canvas, data.countingData)
 
@@ -115,9 +121,6 @@ def run(width=900, height=900):
     # set up menu
     data.menuData = data
     menu.initMenu(data.menuData)
-    # set up counting two ways stuff
-    data.countingData = data
-    jimmies.init(data.countingData)
 
     # set up events
     root.bind("<Button-1>", lambda event:
