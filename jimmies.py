@@ -85,7 +85,7 @@ def initialForm(m,n,k,canvas, data):
     canvas.create_rectangle(data.width / 20, data.height / 20 * (r + 4), data.width/5.5, data.height/20 * (r + 9), width = 4)
     canvas.create_line(data.width / 10 * 1.9, data.height / 20 * (r + 6) * .98, data.width / 10 * 2.05,  data.height / 20 * (r + 6) * .98, width = 2)
     canvas.create_line(data.width / 10 * 1.9, data.height / 20 * (r + 6) * 1.03, data.width / 10 * 2.05,  data.height / 20 * (r + 6) * 1.03, width = 2)
-    canvas.create_text(data.width / 20 + 3, data.height / 20 * (r + 4) + 3, anchor = NW, text = "Pick k total poople from a group of m + n objects" , width = data.width / 8, font = "helvetica " + str(s), justify = CENTER)
+    canvas.create_text(data.width / 20 + 3, data.height / 20 * (r + 4) + 3, anchor = NW, text = "Pick k total people from a group of m + n objects" , width = data.width / 8, font = "helvetica " + str(s), justify = CENTER)
     canvas.create_text(data.width / 20 + 3, data.height / 20 * (r + 11.5) + 3, text = "(    )" , font = "helvetica " + str(int(3.5 * s)), anchor = W)
     canvas.create_text(data.width / 8.5, data.height / 20 * (r + 11.5) + 3, text = str(m + n) + "          " + str(k) , font = "helvetica " + str(s), width = 100 , justify =  CENTER)
     
