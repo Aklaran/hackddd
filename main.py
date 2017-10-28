@@ -7,9 +7,8 @@ import menu
 
 def init(data):
     # data.menuData is defined in menu.py
+    data.scenes = ["menu", "n choose k", "counting in two ways"]
     data.state = "menu"
-
-    data.scenes = ["n choose k", "counting in two ways"]
 
     # optionRoot = Tk()
     # var = StringVar(optionRoot)
@@ -18,11 +17,12 @@ def init(data):
     # w = OptionMenu(optionRoot, var, *data.scenes)
     # w.pack()
 
+def changeState(data, scene):
+    data.state = scene
 
 def mousePressed(event, data):
     if checkCollision(event, data.menuData.buttonBox):
-        return
-        # scene transition
+        changeState(data, data.menuData.sceneChoice)
     elif checkCollision(event, data.menuData.upBox):
         menu.changeListOption(data.menuData, "up")
     elif checkCollision(event, data.menuData.downBox):
@@ -49,6 +49,11 @@ def redrawAll(canvas, data):
 
     if data.state == "menu":
         menu.drawMenu(canvas, data.menuData)
+    elif data.state == "n choose k":
+        return
+    elif data.state == "counting in two ways":
+        return
+
 
 def drawFrameRate(canvas, data):
     frameRate = len(data.t)
@@ -112,7 +117,7 @@ def run(width=900, height=900):
 
     data.menuData = data;
     menu.initMenu(data.menuData)
-    print(str(data.menuData.width));
+    print(str(data.menuData.width))
 
     # set up events
     root.bind("<Button-1>", lambda event:
